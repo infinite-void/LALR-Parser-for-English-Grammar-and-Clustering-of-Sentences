@@ -28,7 +28,7 @@
 function parseInput() {
 	// TODO refactoring
 	var stack = [0];
-	
+	var returnvalue = 0;
 	function stateIndex() {
 		return stack[2 * ((stack.length - 1) >> 1)];
 	}
@@ -75,23 +75,27 @@ function parseInput() {
 	$element('traceAndTreeRows').innerHTML = rows;
 	$element('tree').rowSpan = i + 1;
 	$element('tree').innerHTML = "&nbsp";
-	
 	$element('maximumStepCount').style.color = 'black';
 	
 	if (action == 'r0') {
+		returnvalue  = 1;
+		$element('acc-state').innerHTML = 'grammatically right!';
 		$element('input').style.color = 'green';
 		$element('tree').innerHTML = formatTree(stack[1]);
 	} else if (action == undefined) {
+		$element('acc-state').innerHTML = 'grammatically wrong!';
 		$element('input').style.color = 'red';
 	} else {
 		$element('input').style.color = 'orange';
 		$element('maximumStepCount').style.color = 'orange';
 	}
+	return returnvalue;
+	
 }
 
 function formatInitialParseView(input, maximumStepCount) {
-	var result = "<p>Input (tokens): <input id=\"input\" type=\"text\" size=\"" + input.length + "\" onkeyup=\"resize(this, 1);\" onchange=\"parseInput();\" value=\"" + input + "\"></p>";
-	result += "<p>Maximum number of steps: <input id=\"maximumStepCount\" type=\"text\" size=\""+ maximumStepCount.toString().length + "\" onkeyup=\"resize(this, 1);\" onchange=\"parseInput();\" value=\"" + maximumStepCount + "\"></p>";
+	var result = "<p>Input (tokens): <input id=\"input\" type=\"text\" size=\"" + input.length + "\" onkeyup=\"resize(this, 1);\" onchange=\"therunner();\" value=\"" + input + "\"></p>";
+	result += "<p>Maximum number of steps: <input id=\"maximumStepCount\" type=\"text\" size=\""+ maximumStepCount.toString().length + "\" onkeyup=\"resize(this, 1);\" onchange=\"therunner();\" value=\"" + maximumStepCount + "\"></p>";
 	result += "<p><input type=\"button\" value=\"PARSE\"></p>";
 	result += "<br>";
 	result += "<table border=\"6\">";

@@ -47,14 +47,14 @@ th { white-space: nowrap; }
 </head>
 <body>
 <script language="javascript">
-<!--
+
 
 var lrTable;
 
 function grammarChanged() {
 	displayRuleIndices();
 	
-	var grammar = new Grammar($element('grammar').value);
+	//var grammar = new Grammar($element('grammar').value);
 	var lrClosureTable = new LRClosureTable(grammar);
 	lrTable = new LRTable(lrClosureTable);
 
@@ -65,191 +65,60 @@ function grammarChanged() {
 	parseInput();
 }
 
-// -->
-</script>
-<table><tbody><tr><td>
-	<div id="grammarView"><div>LR(1) grammar ('' is &#949;):</div><table><tbody><tr><td><textarea style="text-align: right; border: 0; color: green; background-color: #F0F0F0" id="ruleIndices" rows="25" cols="3" readonly="true">(0)
-(1)
-(2)
-(3)
+function therunner() {
+	var str = "";
+	var parainput = $element('parainput').value;
+	var i = 0;
+	while(i < parainput.length) {
+		if(parainput[i] != '.') {
+			str += parainput[i];
+		}
+		else  {
+			$element('input').value = str;
+			str = "";
+			grammarChanged();
+			var result = parseInput();
+			console.log(result);
+		}
+		i++;
+	}
+	
+}
 
-</textarea></td><td><textarea id="grammar" rows="25" cols="20" onfocus="$('ruleIndices').value = ''" onblur="displayRuleIndices();" onchange="grammarChanged();">S' -&gt; S
-S -&gt; C C
-C -&gt; c C
-C -&gt; d
-</textarea></td></tr></tbody></table></div>
-	<br>
-	<div id="firstFollowView"><table border="1"><thead><tr><th colspan="2">FIRST table</th></tr><tr><th>Nonterminal</th><th>FIRST</th></tr></thead><tbody><tr><td>S'</td><td>{c,d}</td></tr><tr><td>S</td><td>{c,d}</td></tr><tr><td>C</td><td>{c,d}</td></tr></tbody></table></div>
-</td><td>
-	<br>
-	<input type="button" value="&gt;&gt;">
-</td><td>
-	<div style="height: 100%; overflow: auto;">
-		<div id="lrClosureTableView"><table border="1"><thead><tr><th colspan="4">LR(1) closure table</th></tr><tr><th>Goto</th><th>Kernel</th><th>State</th><th>Closure</th></tr></thead><tbody id="lrClosureTableRows"><tr><td></td><td>{[S' -&gt; .S, $]}</td><td style="color: blue;">0</td><td>{[S' -&gt; .S, $]; [S -&gt; .C C, $]; [C -&gt; .c C, c/d]; [C -&gt; .d, c/d]}</td></tr><tr><td>goto(0, S)</td><td>{<span style="color: green;">[S' -&gt; S., $]</span>}</td><td style="color: blue;">1</td><td>{<span style="color: green;">[S' -&gt; S., $]</span>}</td></tr><tr><td>goto(0, C)</td><td>{[S -&gt; C.C, $]}</td><td style="color: blue;">2</td><td>{[S -&gt; C.C, $]; [C -&gt; .c C, $]; [C -&gt; .d, $]}</td></tr><tr><td>goto(0, c)</td><td>{[C -&gt; c.C, c/d]}</td><td style="color: blue;">3</td><td>{[C -&gt; c.C, c/d]; [C -&gt; .c C, c/d]; [C -&gt; .d, c/d]}</td></tr><tr><td>goto(0, d)</td><td>{<span style="color: green;">[C -&gt; d., c/d]</span>}</td><td style="color: blue;">4</td><td>{<span style="color: green;">[C -&gt; d., c/d]</span>}</td></tr><tr><td>goto(2, C)</td><td>{<span style="color: green;">[S -&gt; C C., $]</span>}</td><td style="color: blue;">5</td><td>{<span style="color: green;">[S -&gt; C C., $]</span>}</td></tr><tr><td>goto(2, c)</td><td>{[C -&gt; c.C, $]}</td><td style="color: blue;">6</td><td>{[C -&gt; c.C, $]; [C -&gt; .c C, $]; [C -&gt; .d, $]}</td></tr><tr><td>goto(2, d)</td><td>{<span style="color: green;">[C -&gt; d., $]</span>}</td><td style="color: blue;">7</td><td>{<span style="color: green;">[C -&gt; d., $]</span>}</td></tr><tr><td>goto(3, C)</td><td>{<span style="color: green;">[C -&gt; c C., c/d]</span>}</td><td style="color: blue;">8</td><td>{<span style="color: green;">[C -&gt; c C., c/d]</span>}</td></tr><tr><td>goto(3, c)</td><td>{[C -&gt; c.C, c/d]}</td><td style="color: blue;">3</td><td>&nbsp;</td></tr><tr><td>goto(3, d)</td><td>{<span style="color: green;">[C -&gt; d., c/d]</span>}</td><td style="color: blue;">4</td><td>&nbsp;</td></tr><tr><td>goto(6, C)</td><td>{<span style="color: green;">[C -&gt; c C., $]</span>}</td><td style="color: blue;">9</td><td>{<span style="color: green;">[C -&gt; c C., $]</span>}</td></tr><tr><td>goto(6, c)</td><td>{[C -&gt; c.C, $]}</td><td style="color: blue;">6</td><td>&nbsp;</td></tr><tr><td>goto(6, d)</td><td>{<span style="color: green;">[C -&gt; d., $]</span>}</td><td style="color: blue;">7</td><td>&nbsp;</td></tr></tbody></table></div>
-		<br><hr><br>
-		<table cellpadding="8" border="1"><tbody><tr><td>
-			<div id="lrTableView"><table border="1"><thead><tr><th colspan="7">LR table</th></tr><tr><th rowspan="2">State</th><th rowspan="1" colspan="3">ACTION</th><th colspan="3">GOTO</th></tr>
-<tr><th>c</th><th>d</th><th>$</th><th>S'</th><th>S</th><th>C</th></tr></thead><tbody><tr><td style="color: blue;">0</td><td>s<span style="color: blue;">3</span></td><td>s<span style="color: blue;">4</span></td><td>&nbsp;</td><td>&nbsp;</td><td><span style="color: blue;">1</span></td><td><span style="color: blue;">2</span></td></tr>
-<tr><td style="color: blue;">1</td><td>&nbsp;</td><td>&nbsp;</td><td><span style="color: green;">acc</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td style="color: blue;">2</td><td>s<span style="color: blue;">6</span></td><td>s<span style="color: blue;">7</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><span style="color: blue;">5</span></td></tr>
-<tr><td style="color: blue;">3</td><td>s<span style="color: blue;">3</span></td><td>s<span style="color: blue;">4</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><span style="color: blue;">8</span></td></tr>
-<tr><td style="color: blue;">4</td><td>r<sub style="color: green;">3</sub></td><td>r<sub style="color: green;">3</sub></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td style="color: blue;">5</td><td>&nbsp;</td><td>&nbsp;</td><td>r<sub style="color: green;">1</sub></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td style="color: blue;">6</td><td>s<span style="color: blue;">6</span></td><td>s<span style="color: blue;">7</span></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><span style="color: blue;">9</span></td></tr>
-<tr><td style="color: blue;">7</td><td>&nbsp;</td><td>&nbsp;</td><td>r<sub style="color: green;">3</sub></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td style="color: blue;">8</td><td>r<sub style="color: green;">2</sub></td><td>r<sub style="color: green;">2</sub></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td style="color: blue;">9</td><td>&nbsp;</td><td>&nbsp;</td><td>r<sub style="color: green;">2</sub></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-</tbody></table></div>
-			</td><td>
-			<div id="lrParseView"><p>Input (tokens): <input id="input" type="text" size="5" onkeyup="resize(this, 1);" onchange="parseInput();" value="c d d" style="color: green;"></p><p>Maximum number of steps: <input id="maximumStepCount" type="text" size="3" onkeyup="resize(this, 1);" onchange="parseInput();" value="100" style="color: black;"></p><p><input type="button" value="PARSE"></p><br><table border="6"><thead><tr><th colspan="4">Trace</th><th rowspan="2">Tree</th></tr><tr><th>Step</th><th>Stack</th><th>Input</th><th>Action</th></tr></thead><tbody id="traceAndTreeRows"><tr><td>1</td><td><span style="color: blue;">0</span></td><td>c d d $</td><td>s<span style="color: blue;">3</span></td><td id="tree" style="vertical-align: top;" rowspan="14"><table border="1"><thead><tr><th colspan="2">S</th></tr></thead><tbody><tr><td style="vertical-align: top;"><table border="1"><thead><tr><th colspan="2">C</th></tr></thead><tbody><tr><td style="vertical-align: top;">c</td><td style="vertical-align: top;"><table border="1"><thead><tr><th colspan="1">C</th></tr></thead><tbody><tr><td style="vertical-align: top;">d</td></tr></tbody></table></td></tr></tbody></table></td><td style="vertical-align: top;"><table border="1"><thead><tr><th colspan="1">C</th></tr></thead><tbody><tr><td style="vertical-align: top;">d</td></tr></tbody></table></td></tr></tbody></table></td></tr>
-<tr><td>2</td><td><span style="color: blue;">0</span> c <span style="color: blue;">3</span></td><td>d d $</td><td>s<span style="color: blue;">4</span></td></tr>
-<tr><td>3</td><td><span style="color: blue;">0</span> c <span style="color: blue;">3</span> d <span style="color: blue;">4</span></td><td>d $</td><td>r<sub style="color: green;">3</sub></td></tr>
-<tr><td>4</td><td><span style="color: blue;">0</span> c <span style="color: blue;">3</span> C</td><td>d $</td><td><span style="color: blue;">8</span></td></tr>
-<tr><td>5</td><td><span style="color: blue;">0</span> c <span style="color: blue;">3</span> C <span style="color: blue;">8</span></td><td>d $</td><td>r<sub style="color: green;">2</sub></td></tr>
-<tr><td>6</td><td><span style="color: blue;">0</span> C</td><td>d $</td><td><span style="color: blue;">2</span></td></tr>
-<tr><td>7</td><td><span style="color: blue;">0</span> C <span style="color: blue;">2</span></td><td>d $</td><td>s<span style="color: blue;">7</span></td></tr>
-<tr><td>8</td><td><span style="color: blue;">0</span> C <span style="color: blue;">2</span> d <span style="color: blue;">7</span></td><td>$</td><td>r<sub style="color: green;">3</sub></td></tr>
-<tr><td>9</td><td><span style="color: blue;">0</span> C <span style="color: blue;">2</span> C</td><td>$</td><td><span style="color: blue;">5</span></td></tr>
-<tr><td>10</td><td><span style="color: blue;">0</span> C <span style="color: blue;">2</span> C <span style="color: blue;">5</span></td><td>$</td><td>r<sub style="color: green;">1</sub></td></tr>
-<tr><td>11</td><td><span style="color: blue;">0</span> S</td><td>$</td><td><span style="color: blue;">1</span></td></tr>
-<tr><td>12</td><td><span style="color: blue;">0</span> S <span style="color: blue;">1</span></td><td>$</td><td><span style="color: green;">acc</span></td></tr>
-</tbody></table></div>
-		</td></tr></tbody></table>
+</script>
+<table><tbody><tr>
+	<td>
+	<div id="grammarView">
 	</div>
-</td></tr></tbody></table>
+	<br>
+	<div id ='firstFollowView'></div>
+	<div style="height: 100%; overflow: auto;">
+		<div id="lrClosureTableView"></div>
+		<div id="lrTableView"></div>
+	</td>
+	<td> 
+			<div id="lrParseView">
+			</div>
+			<textarea id='acc-state'></textarea>
+			<textarea id='parainput'></textarea>
+			<button onclick="therunner()">RUNNER</button>
+	</td></tr></tbody></table>
+	</div>
+</td></tr>
+</tbody></table>
+
 
 <script language="javascript">
-<!--
-
-// <TEST>
-
-{
-	/*
-	 * (0) A' -> A
-	 * (1) A -> a A
-	 * (2) A -> a
-	 *
-	 * FIRST(A') = { a }
-	 * FIRST(A) = { a }
-	 */
-	var grammar = new Grammar('A\' -> A\nA -> a A\nA -> a');
-	
-	assertEquality('A\'', grammar.axiom);
-	assertEquality(3, grammar.rules.length);
-	assertEquality(['a'].toString(), grammar.firsts['A'].toString());
-	
-	assertEquals(new Item(new Rule(grammar, 'A -> a A'), 1), new Item(new Rule(grammar, 'A -> a A'), 1));
-	assertEquality(0, indexOfUsingEquals(new Item(new Rule(grammar, 'A -> a A'), 1), [new Item(new Rule(grammar, 'A -> a A'), 1)]));
-	
-	/*
-	 *              closure { [A' -> .A, $] }               = 0 = { [A' -> .A, $]; [A -> .a A, $]; [A -> .a, $] }
-	 * goto(0, A) = closure { [A' -> A., $] }               = 1 = { [A' -> A., $] }
-	 * goto(0, a) = closure { [A -> a.A, $]; [A -> a., $] } = 2 = { [A -> a.A, $]; [A -> a., $]; [A -> .a A, $]; [A -> .a, $] }
-	 * goto(2, A) = closure { [A -> a A., $] }              = 3 = { [A -> a A., $] }
-	 * goto(2, a) = closure { [A -> a.A, $]; [A -> a., $] } = 2
-	 */
-	var lrClosureTable = new LRClosureTable(grammar);
-	
-	assertEquality(3, lrClosureTable.kernels[0].closure.length);
-	assertEquality(4, lrClosureTable.kernels.length);
-	
-	/*
-	 *   a  $  A' A
-	 * 0 s2       1
-	 * 1    r0
-	 * 2    r2    3
-	 * 3 s2 r1
-	 */
-	var lrTable = new LRTable(lrClosureTable);
-	
-	assertEquality(4, lrTable.states.length);
-	assertEquality('s2', lrTable.states[0]['a']);
-	assertEquality('r0', lrTable.states[1]['$']);
-	assertEquality('r2', lrTable.states[2]['$']);
-	assertEquality('3', lrTable.states[2]['A']);
-	assertEquality('r1', lrTable.states[3]['$']);
-}
-
-{
-	/*
-	 * (0) A' -> A
-	 * (1) A -> B
-	 * (2) A -> ''
-	 * (3) B -> ( A )
-	 *
-	 * FIRST(A') = { '', ( }
-	 * FIRST(A) = { '', ( }
-	 * FIRST(B) = { ( }
-	 */
-	var grammar = new Grammar('A\' -> A\nA -> B\nA -> \'\'\nB -> ( A )');
-	
-	assertEquality('A\'', grammar.axiom);
-	assertEquality(4, grammar.rules.length);
-	assertEquality([EPSILON, '('].toString(), grammar.firsts['A'].toString());
-	assertEquality('[A -> .b, ]', new Item(new Rule(grammar, 'A -> b'), 0).toString());
-	
-	/*
-	 *              closure { [A' -> .A, $] }    = 0 = { [A' -> .A, $]; [A -> .B, $]; [A -> ., $]; [B -> .( A ), $] }
-	 * goto(0, A) = closure { [A' -> A., $] }    = 1 = { [A' -> A., $] }
-	 * goto(0, B) = closure { [A -> B., $] }     = 2 = { [A -> B., $] }
-	 * goto(0, () = closure { [B -> (.A ), $] }  = 3 = { [B -> (.A ), $]; [A -> .B, )]; [A -> ., )]; [B -> .( A ), )] }
-	 * goto(3, A) = closure { [B -> ( A.), $] }  = 4 = { [B -> ( A.), $] }
-	 * goto(3, B) = closure { [A -> B., )] }     = 5 = { [A -> B., )] }
-	 * goto(3, () = closure { [B -> (.A ), )] }  = 6 = { [B -> (.A ), )]; [A -> .B, )]; [A -> ., )]; [B -> .( A ), )] }
-	 * goto(4, )) = closure { [B -> ( A )., $] } = 7 = { [B -> ( A )., $] }
-	 * goto(6, A) = closure { [B -> ( A.), )] }  = 8 = { [B -> ( A.), )] }
-	 * goto(6, B) = closure { [A -> B., )] }     = 5
-	 * goto(6, () = closure { [B -> (.A ), )] }  = 6
-	 * goto(8, )) = closure { [B -> ( A )., )] } = 9 = { [B -> ( A )., )] }
-	 */
-	var lrClosureTable = new LRClosureTable(grammar);
-	
-	assertEquality(4, lrClosureTable.kernels[0].closure.length);
-	assertEquality(10, lrClosureTable.kernels.length);
-	
-	/*
-	 *   (  )  $  A' A B
-	 * 0 s3    r2    1 2
-	 * 1       r0
-	 * 2       r1
-	 * 3 s6 r2       4 5
-	 * 4    s7
-	 * 5    r1   
-	 * 6 s6 r2       8 5
-	 * 7       r3
-	 * 8    s9
-	 * 9    r3
-	 */
-	var lrTable = new LRTable(lrClosureTable);
-	
-	assertEquality(10, lrTable.states.length);
-	assertEquality('s3', lrTable.states[0]['(']);
-	assertEquality('r2', lrTable.states[0]['$']);
-	assertEquality('r0', lrTable.states[1]['$']);
-	assertEquality('4', lrTable.states[3]['A']);
-	assertEquality('r3', lrTable.states[9][')']);
-}
-
-// </TEST>
-
-// <INITIALIZATION>
-
 {
 	var grammar = new Grammar('S\' -> S\n\
-S -> C C\n\
-C -> c C\n\
-C -> d');
+S -> N V\n\
+N -> d n\n\
+V -> v a');
 
 	$element('grammarView').innerHTML = formatGrammar(grammar);
 }
 
-$element('lrParseView').innerHTML = formatInitialParseView('c d d', 100);
+$element('lrParseView').innerHTML = formatInitialParseView('', 100);
 
-grammarChanged();
-
-// </INITIALIZATION>
-
-// -->
 </script>
-
 </body></html>
