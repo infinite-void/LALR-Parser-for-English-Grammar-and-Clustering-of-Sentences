@@ -27,6 +27,7 @@
  */
 function parseInput() {
 	// TODO refactoring
+	console.log('parsing.....');
 	var stack = [0];
 	var returnvalue = 0;
 	function stateIndex() {
@@ -95,10 +96,10 @@ function parseInput() {
 
 function formatInitialParseView(input, maximumStepCount) {
 	var result = "<p>Input (tokens): <input id=\"input\" type=\"text\" size=\"" + input.length + "\" onkeyup=\"resize(this, 1);\" onchange=\"therunner();\" value=\"" + input + "\"></p>";
-	result += "<p>Maximum number of steps: <input id=\"maximumStepCount\" type=\"text\" size=\""+ maximumStepCount.toString().length + "\" onkeyup=\"resize(this, 1);\" onchange=\"therunner();\" value=\"" + maximumStepCount + "\"></p>";
-	result += "<p><input type=\"button\" value=\"PARSE\"></p>";
+	result += "<p hidden>Maximum number of steps: <input id=\"maximumStepCount\" type=\"text\" size=\""+ maximumStepCount.toString().length + "\" onkeyup=\"resize(this, 1);\" onchange=\"therunner();\" value=\"" + maximumStepCount + "\"></p>";
+	result += "<p><input type=\"button\" value=\"PARSE\" hidden></p>";
 	result += "<br>";
-	result += "<table border=\"6\">";
+	result += "<table border=\"6\" hidden>";
 	result += "<thead>";
 	result += "<tr><th colspan=\"4\">Trace</th><th rowspan=\"2\">Tree</th></tr>";
 	result += "<tr><th>Step</th><th>Stack</th><th>Input</th><th>Action</th></tr>";

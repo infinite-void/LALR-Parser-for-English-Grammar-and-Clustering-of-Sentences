@@ -1,6 +1,7 @@
 import sys
 import collections
 import nltk
+import nltk.data
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
@@ -35,15 +36,13 @@ def cluster_sentences(sentences, nb_of_clusters=5):
 
 
 if __name__ == "__main__":
-        sentences = list()
-        sentences.append(sys.argv[1])
-        sentences.append(sys.argv[2])
-        sentences.append(sys.argv[3])
+        tok = nltk.data.load('tokenizers/punkt/english.pickle')
+        sentences = list(tok.tokenize(sys.argv[1]))
         nclusters= 2
         clusters = cluster_sentences(sentences, nclusters)
         for cluster in range(nclusters):
             print("cluster ",cluster,":")
             for i,sentence in enumerate(clusters[cluster]):
                 print("\tsentence ",i,": ",sentences[sentence])
-        print(clusters)
+        #print(clusters)
         sys.stdout.flush()       

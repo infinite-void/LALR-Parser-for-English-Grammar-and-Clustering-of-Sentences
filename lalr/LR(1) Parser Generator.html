@@ -66,8 +66,22 @@ function grammarChanged() {
 }
 
 function therunner() {
-	var str = "";
 	var parainput = $element('parainput').value;
+	//var params = { "input": parainput }
+
+	//const url='http://localhost:3000/?input='+parainput;
+
+	var url = new URL('http://localhost:3000/')
+
+	var params = {input: parainput};
+	url.search = new URLSearchParams(params).toString();
+	
+	//fetch(url).then(data => {return data.json()})
+	//		.then(res => {console.log(res)}).catch(error => {console.log(error)});
+	fetch(url).then(data => {console.log(data);return data.json()})
+			.then(res => {console.log(res)}).catch(error => {console.log(error)});
+	
+	var str = "";
 	var i = 0;
 	while(i < parainput.length) {
 		if(parainput[i] != '.') {
@@ -88,19 +102,19 @@ function therunner() {
 </script>
 <table><tbody><tr>
 	<td>
-	<div id="grammarView">
+	<div id="grammarView" hidden>
 	</div>
 	<br>
-	<div id ='firstFollowView'></div>
+	<div id ='firstFollowView' hidden></div>
 	<div style="height: 100%; overflow: auto;">
-		<div id="lrClosureTableView"></div>
-		<div id="lrTableView"></div>
+		<div id="lrClosureTableView"hidden></div>
+		<div id="lrTableView" hidden></div>
 	</td>
 	<td> 
 			<div id="lrParseView">
 			</div>
 			<textarea id='acc-state'></textarea>
-			<textarea id='parainput'></textarea>
+			<textarea id='parainput' rows='7' cols='30'></textarea>
 			<button onclick="therunner()">RUNNER</button>
 	</td></tr></tbody></table>
 	</div>
@@ -111,9 +125,16 @@ function therunner() {
 <script language="javascript">
 {
 	var grammar = new Grammar('S\' -> S\n\
-S -> N V\n\
+S -> N V N\n\
 N -> d n\n\
-V -> v a');
+N -> d ad n\n\
+N -> p n\n\
+N -> p\n\
+N -> n\n\
+V -> v\n\
+V -> v a\n\
+V -> v v\n\
+V -> v a v');
 
 	$element('grammarView').innerHTML = formatGrammar(grammar);
 }
