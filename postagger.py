@@ -2,8 +2,8 @@
 import nltk
 from nltk.tokenize import word_tokenize, sent_tokenize
 import sys
-nltk.download('averaged_perceptron_tagger')
-
+import warnings
+warnings.filterwarnings("ignore")
 if __name__ == "__main__":
     contents = sys.argv[1]
     tokenized = sent_tokenize(contents)
@@ -19,6 +19,5 @@ if __name__ == "__main__":
         test_list+=tagged
     res = [lis[1] for lis in test_list]
     lalrinput = ' '.join([str(elem[0]) for elem in res])
-
     print(lalrinput)
     

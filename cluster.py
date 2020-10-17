@@ -8,7 +8,8 @@ from nltk.stem import PorterStemmer
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from pprint import pprint
-
+import warnings
+warnings.filterwarnings("ignore")
 
 def word_tokenizer(text):
         tokens = word_tokenize(text)
@@ -18,8 +19,6 @@ def word_tokenizer(text):
 
 
 def cluster_sentences(sentences, nb_of_clusters=5):
-        nltk.download('stopwords')
-        nltk.download('punkt')
         tfidf_vectorizer = TfidfVectorizer(tokenizer=word_tokenizer,
                                             stop_words=stopwords.words('english'),
                                             max_df=0.9,
@@ -44,5 +43,4 @@ if __name__ == "__main__":
             print("cluster ",cluster,":")
             for i,sentence in enumerate(clusters[cluster]):
                 print("\tsentence ",i,": ",sentences[sentence])
-        #print(clusters)
         sys.stdout.flush()       

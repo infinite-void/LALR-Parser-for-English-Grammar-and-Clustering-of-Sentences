@@ -1,28 +1,3 @@
-<!--
-/*
- *  The MIT License
- * 
- *  Copyright 2011 Greg.
- * 
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- * 
- *  The above copyright notice and this permission notice shall be included in
- *  all copies or substantial portions of the Software.
- * 
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *  THE SOFTWARE.
- */
--->
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=windows-1252">
 <title>LR(1) Parser Generator</title>
@@ -67,35 +42,70 @@ function grammarChanged() {
 
 function therunner() {
 	var parainput = $element('parainput').value;
-	//var params = { "input": parainput }
-
-	//const url='http://localhost:3000/?input='+parainput;
-
 	var url = new URL('http://localhost:3000/')
-
+	var clusterResult, posResult;
 	var params = {input: parainput};
+	var sentences = parainput.split(".");
+	
 	url.search = new URLSearchParams(params).toString();
 	
-	//fetch(url).then(data => {return data.json()})
-	//		.then(res => {console.log(res)}).catch(error => {console.log(error)});
-	fetch(url).then(data => {console.log(data);return data.json()})
-			.then(res => {console.log(res)}).catch(error => {console.log(error)});
-	
-	var str = "";
-	var i = 0;
-	while(i < parainput.length) {
-		if(parainput[i] != '.') {
-			str += parainput[i];
+	const request = async() => {
+		await fetch(url).then(data => {
+			return data.json();
+		}).then(res => {
+			clusterResult = res["cluster"];
+			posResult = res["pos"];
+		}).catch(error => {console.log(error)});
+		
+		posResult = posResult[1];
+		clusterResult = clusterResult[1];
+
+		posResult = posResult.toLowerCase();
+		parainput = posResult;
+		console.log(clusterResult);
+		$element('cluster').value = clusterResult;
+
+		var str = "";
+		var i = 0;
+		var parseResult = "";
+		/*while(i < parainput.length) {
+			if(parainput[i] != '.') {
+				str += parainput[i];
+			}
+			else  {
+				$element('input').value = str;
+				parseResult += str + " ";
+				str = "";
+				grammarChanged();
+				var result = parseInput();
+				if(result == 0)
+					parseResult += "not acccepted\n";
+				else	
+					parseResult += "accepted\n" 
+			}
+			i++;
 		}
-		else  {
-			$element('input').value = str;
-			str = "";
+		console.log(parseResult);*/
+		parainput = parainput.split(".");
+		for(var i = 0; i < parainput.length ; i++) {
+			if(parainput[i] == " " || parainput[i] == "\n")
+				continue;
+			$element('input').value = parainput[i];
+			parseResult += sentences[i] + " ";
 			grammarChanged();
 			var result = parseInput();
-			console.log(result);
+			if(result == 0)
+				parseResult += "not acccepted\n";
+			else	
+				parseResult += "accepted\n" 
 		}
-		i++;
-	}
+		console.log(parseResult);
+		$element('correctness').value = parseResult;
+	};
+
+	request();
+	
+	
 	
 }
 
@@ -115,7 +125,9 @@ function therunner() {
 			</div>
 			<textarea id='acc-state'></textarea>
 			<textarea id='parainput' rows='7' cols='30'></textarea>
-			<button onclick="therunner()">RUNNER</button>
+			<button onclick="therunner()">RUNNER</button><br>
+			<textarea id='cluster' rows='12' cols='40'></textarea>
+			<textarea id='correctness' rows='12' cols='40'></textarea>
 	</td></tr></tbody></table>
 	</div>
 </td></tr>
@@ -125,14 +137,14 @@ function therunner() {
 <script language="javascript">
 {
 	var grammar = new Grammar('S\' -> S\n\
-S -> N V N\n\
+S -> N V \n\
 N -> d n\n\
 N -> d ad n\n\
 N -> p n\n\
 N -> p\n\
 N -> n\n\
 V -> v\n\
-V -> v a\n\
+V -> v j\n\
 V -> v v\n\
 V -> v a v');
 
