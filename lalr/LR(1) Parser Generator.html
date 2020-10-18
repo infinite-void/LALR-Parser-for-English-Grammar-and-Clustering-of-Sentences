@@ -42,50 +42,38 @@ function grammarChanged() {
 
 function therunner() {
 	var parainput = $element('parainput').value;
-	var url = new URL('http://localhost:3000/')
+	var url = new URL('http://localhost:3000/');
 	var clusterResult, posResult;
+
 	var params = {input: parainput};
+
 	var sentences = parainput.split(".");
 	
 	url.search = new URLSearchParams(params).toString();
 	
+
 	const request = async() => {
+		
 		await fetch(url).then(data => {
 			return data.json();
 		}).then(res => {
 			clusterResult = res["cluster"];
 			posResult = res["pos"];
 		}).catch(error => {console.log(error)});
-		
+
 		posResult = posResult[1];
 		clusterResult = clusterResult[1];
 
 		posResult = posResult.toLowerCase();
 		parainput = posResult;
+
 		console.log(clusterResult);
 		$element('cluster').value = clusterResult;
 
 		var str = "";
 		var i = 0;
 		var parseResult = "";
-		/*while(i < parainput.length) {
-			if(parainput[i] != '.') {
-				str += parainput[i];
-			}
-			else  {
-				$element('input').value = str;
-				parseResult += str + " ";
-				str = "";
-				grammarChanged();
-				var result = parseInput();
-				if(result == 0)
-					parseResult += "not acccepted\n";
-				else	
-					parseResult += "accepted\n" 
-			}
-			i++;
-		}
-		console.log(parseResult);*/
+		
 		parainput = parainput.split(".");
 		for(var i = 0; i < parainput.length ; i++) {
 			if(parainput[i] == " " || parainput[i] == "\n")
@@ -100,7 +88,7 @@ function therunner() {
 				parseResult += "accepted\n" 
 		}
 		console.log(parseResult);
-		$element('correctness').value = parseResult;
+		$element('correctness').value = parseResult	;
 	};
 
 	request();
@@ -114,11 +102,13 @@ function therunner() {
 	<td>
 	<div id="grammarView" hidden>
 	</div>
+
 	<br>
 	<div id ='firstFollowView' hidden></div>
+
 	<div style="height: 100%; overflow: auto;">
-		<div id="lrClosureTableView"hidden></div>
-		<div id="lrTableView" hidden></div>
+		<div id="lrClosureTableView" hidden></div>
+		<div id="lrTableView" hidden ></div>
 	</td>
 	<td> 
 			<div id="lrParseView">
