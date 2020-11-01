@@ -18,18 +18,21 @@ app.use(function(req, res, next) {
 
 app.get("/", (req, res, next) => {
 	var input = req.query.input;
+	var clusternumber = req.query.clusternumber;
 	var clusterData, posData;
 	var reply = {};
-	console.log("Input   :  " + input + "\n\n");
+	console.log("Input   :  " + input + "\n\n" + "Number of clusters : " + clusternumber + "\n\n");
 	
 	const proPOS = spawnSync('python3', ["./postagger.py", input], { encoding : 'utf8' });
 	posData = proPOS.output;
 
-	const proCtr = spawnSync('python3', ["./cluster.py", input], { encoding : 'utf8' });
+	const proCtr = spawnSync('python3', ["./cluster.py", input, clusternumber], { encoding : 'utf8' });
 	clusterData = proCtr.output;
 	
 	reply["pos"] = posData;
 	reply["cluster"] = clusterData;
+
+	//console.log("cluster : " + clusterData + "\npos : " + posData + "\n\n");
 
 	res.json(reply); 
 });

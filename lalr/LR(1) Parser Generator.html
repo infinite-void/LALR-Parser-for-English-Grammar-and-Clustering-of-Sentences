@@ -42,10 +42,12 @@ function grammarChanged() {
 
 function therunner() {
 	var parainput = $element('parainput').value;
+	var number = $element('clusternumber').value;
+
 	var url = new URL('http://localhost:3000/');
 	var clusterResult, posResult;
 
-	var params = {input: parainput};
+	var params = {input: parainput, clusternumber: number};
 
 	var sentences = parainput.split(".");
 	
@@ -115,9 +117,11 @@ function therunner() {
 			</div>
 			<textarea id='acc-state'></textarea>
 			<textarea id='parainput' rows='7' cols='30'></textarea>
+			<input type='number' id='clusternumber'></input>
 			<button onclick="therunner()">RUNNER</button><br>
 			<textarea id='cluster' rows='12' cols='40'></textarea>
 			<textarea id='correctness' rows='12' cols='40'></textarea>
+			
 	</td></tr></tbody></table>
 	</div>
 </td></tr>

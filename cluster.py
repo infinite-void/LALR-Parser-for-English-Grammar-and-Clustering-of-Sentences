@@ -37,10 +37,20 @@ def cluster_sentences(sentences, nb_of_clusters=5):
 if __name__ == "__main__":
         tok = nltk.data.load('tokenizers/punkt/english.pickle')
         sentences = list(tok.tokenize(sys.argv[1]))
-        nclusters= 2
+        nclusters= int(sys.argv[2])
         clusters = cluster_sentences(sentences, nclusters)
         for cluster in range(nclusters):
-            print("cluster ",cluster,":")
-            for i,sentence in enumerate(clusters[cluster]):
-                print("\tsentence ",i,": ",sentences[sentence])
+                print("cluster ",cluster,":")
+                cset = set()
+                for i,sentence in enumerate(clusters[cluster]):
+                        sentences[sentence] = sentences[sentence][:-1]
+                        if i == 0:
+                                cset = set(sentences[sentence].split())
+                        else:
+                                cset = cset & set(sentences[sentence].split())
+                        print("\tsentence ",i,": ",sentences[sentence])
+                print("Keys : ", end='')
+                if not cset == set():
+                        print(cset)
+                print()
         sys.stdout.flush()       
