@@ -69,7 +69,7 @@ function parseInput() {
 }
 
 function formatInitialParseView(input, maximumStepCount) {
-	var result = "<p>Input (tokens): <input id=\"input\" type=\"text\" size=\"" + input.length + "\" onkeyup=\"resize(this, 1);\" onchange=\"therunner();\" value=\"" + input + "\"></p>";
+	var result = "<p><input id=\"input\" type=\"text\" size=\"" + input.length + "\" onkeyup=\"resize(this, 1);\" onchange=\"therunner();\" value=\"" + input + "\" hidden></p>";
 	result += "<p hidden>Maximum number of steps: <input id=\"maximumStepCount\" type=\"text\" size=\""+ maximumStepCount.toString().length + "\" onkeyup=\"resize(this, 1);\" onchange=\"therunner();\" value=\"" + maximumStepCount + "\"></p>";
 	result += "<p><input type=\"button\" value=\"PARSE\" hidden></p>";
 	result += "<br>";

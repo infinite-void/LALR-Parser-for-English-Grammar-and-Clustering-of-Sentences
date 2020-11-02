@@ -32,7 +32,7 @@ app.get("/", (req, res, next) => {
 	reply["pos"] = posData;
 	reply["cluster"] = clusterData;
 
-	//console.log("cluster : " + clusterData + "\npos : " + posData + "\n\n");
+	console.log("\npos : " + posData + "\n\n");
 
 	res.json(reply); 
 });

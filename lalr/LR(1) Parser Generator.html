@@ -85,9 +85,9 @@ function therunner() {
 			grammarChanged();
 			var result = parseInput();
 			if(result == 0)
-				parseResult += "not acccepted\n";
+				parseResult += " - not acccepted\n";
 			else	
-				parseResult += "accepted\n" 
+				parseResult += " - accepted\n" 
 		}
 		console.log(parseResult);
 		$element('correctness').value = parseResult	;
@@ -102,7 +102,7 @@ function therunner() {
 </script>
 <table><tbody><tr>
 	<td>
-	<div id="grammarView" hidden>
+	<div id="grammarView" >
 	</div>
 
 	<br>
@@ -115,12 +115,12 @@ function therunner() {
 	<td> 
 			<div id="lrParseView">
 			</div>
-			<textarea id='acc-state'></textarea>
-			<textarea id='parainput' rows='7' cols='30'></textarea>
-			<input type='number' id='clusternumber'></input>
-			<button onclick="therunner()">RUNNER</button><br>
-			<textarea id='cluster' rows='12' cols='40'></textarea>
-			<textarea id='correctness' rows='12' cols='40'></textarea>
+			<textarea id='acc-state' hidden></textarea>
+			INPUT CONTENT : <textarea id='parainput' rows='7' cols='30'></textarea>
+			NUMBER OF CLUSTERS : <input type='number' id='clusternumber'></input><br>
+			<button onclick="therunner()" height='200px'>RUNNER</button><br>
+			CLUSTERS : <textarea id='cluster' rows='12' cols='40'></textarea>
+			GRAMMATICAL STATUS : <textarea id='correctness' rows='12' cols='40'></textarea>
 			
 	</td></tr></tbody></table>
 	</div>
@@ -131,7 +131,31 @@ function therunner() {
 <script language="javascript">
 {
 	var grammar = new Grammar('S\' -> S\n\
-S -> N V \n\
+S -> N V N\n\
+N -> N V N\n\
+N -> V N\n\
+N -> d N\n\
+N -> p N\n\
+N -> N C N\n\
+N -> j N\n\
+N -> t N\n\
+N -> n\n\
+N -> \'\'\n\
+V -> V V\n\
+V -> V r V\n\
+V -> V C V\n\
+V -> r C V\n\
+V -> r V\n\
+V -> V N V\n\
+V -> v\n\
+V -> \'\'\n\
+C -> c\n\
+C -> i\n\
+C -> \'\'');
+
+	$element('grammarView').innerHTML = formatGrammar(grammar);
+/*	S -> N V \n\
+S -> d v d n\n\
 N -> d n\n\
 N -> d ad n\n\
 N -> p n\n\
@@ -140,9 +164,25 @@ N -> n\n\
 V -> v\n\
 V -> v j\n\
 V -> v v\n\
-V -> v a v');
+V -> \'\'\n\
+V -> v a v*/
 
-	$element('grammarView').innerHTML = formatGrammar(grammar);
+/*
+this is a sentence. i love my school. my teacher teaches well.
+roses are red. the rose plant has thorns. srinath is a good boy. the is red because it is red. rose and jasmine are flowers. 
+football is my favourite game. messi is my favorite player. 
+
+She went to school. I want to know your name. They lived in a huge palace. The angry girl kicked the ball.
+
+Rahul is a clever boy.He likes tasty pizza.I love fresh flowers.Jack likes to visit lovely places.
+
+Hellen Keller was blind. Sun rises in the east. The earth is round. The universe is infinite. 
+
+The girl was washing the car. Sita writes a letter. Rita wrote a letter. Rahul has written a letter.
+
+The car was being washed by the girl. A letter is written by Sita. A letter has been written by Teena.
+
+*/
 }
 
 $element('lrParseView').innerHTML = formatInitialParseView('', 100);

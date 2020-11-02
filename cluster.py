@@ -38,7 +38,9 @@ if __name__ == "__main__":
         tok = nltk.data.load('tokenizers/punkt/english.pickle')
         sentences = list(tok.tokenize(sys.argv[1]))
         nclusters= int(sys.argv[2])
+
         clusters = cluster_sentences(sentences, nclusters)
+        stopset = set(stopwords.words('english'))
         for cluster in range(nclusters):
                 print("cluster ",cluster,":")
                 cset = set()
@@ -49,8 +51,9 @@ if __name__ == "__main__":
                         else:
                                 cset = cset & set(sentences[sentence].split())
                         print("\tsentence ",i,": ",sentences[sentence])
+                
                 print("Keys : ", end='')
                 if not cset == set():
-                        print(cset)
+                        print(cset.difference(stopset))
                 print()
         sys.stdout.flush()       
