@@ -1,6 +1,6 @@
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=windows-1252">
-<title>LR(1) Parser Generator</title>
+<title>Grammar Parser and Clusterer</title>
 <style>
 body { background-color: #F0F0F0; }
 body * { font-family:courier; }
@@ -132,26 +132,33 @@ function therunner() {
 {
 	var grammar = new Grammar('S\' -> S\n\
 S -> N V N\n\
+S -> N\n\
+N -> N V\n\
 N -> N V N\n\
+N -> N N\n\
 N -> V N\n\
 N -> d N\n\
 N -> p N\n\
 N -> N C N\n\
+N -> C N\n\
 N -> j N\n\
 N -> t N\n\
+N -> t V N\n\
+N -> N t N\n\
 N -> n\n\
 V -> V V\n\
-V -> V r V\n\
+V -> V\n\
+V -> V r\n\
 V -> V C V\n\
 V -> r C V\n\
 V -> r V\n\
 V -> V N V\n\
 V -> v\n\
-N -> \'\'\n\
-V -> \'\'\n\
 C -> c\n\
 C -> i\n\
-C -> \'\'');
+N -> \'\'\n\
+V -> \'\'\n\
+');
 
 	$element('grammarView').innerHTML = formatGrammar(grammar);
 /*
@@ -173,6 +180,8 @@ V -> v a v*/
 this is a sentence. i love my school. my teacher teaches well.
 roses are red. the rose plant has thorns. srinath is a good boy. the is red because it is red. rose and jasmine are flowers. 
 football is my favourite game. messi is my favorite player. 
+
+my school is nearby. football is my favorite game. my school has a big ground. paris is a beautiful city. messi is most popular football player. paris is city of love. my school has over 350 students.
 
 She went to school. I want to know your name. They lived in a huge palace. The angry girl kicked the ball.
 
