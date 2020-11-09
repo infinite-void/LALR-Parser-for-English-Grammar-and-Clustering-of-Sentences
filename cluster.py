@@ -26,6 +26,9 @@ def cluster_sentences(sentences, nb_of_clusters=5):
                                             lowercase=True)
         #builds a tf-idf matrix for the sentences
         tfidf_matrix = tfidf_vectorizer.fit_transform(sentences)
+        with open('tfidf.txt', 'w') as f:
+            f.write(str(tfidf_matrix) + '\n')
+
         kmeans = KMeans(n_clusters=nb_of_clusters)
         kmeans.fit(tfidf_matrix)
         clusters = collections.defaultdict(list)

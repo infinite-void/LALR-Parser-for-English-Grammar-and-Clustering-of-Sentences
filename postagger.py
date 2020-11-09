@@ -14,8 +14,10 @@ if __name__ == "__main__":
         # and punctuation in a string
         wordsList = nltk.word_tokenize(i)
 
-
         tagged = nltk.pos_tag(wordsList)
+        with open('tokens.txt', 'a') as f:
+            f.write(str(wordsList) + '\n' + str(tagged) + '\n')
+
         test_list+=tagged
     res = [lis[1] for lis in test_list]
     lalrinput = ' '.join([str(elem[0]) for elem in res])

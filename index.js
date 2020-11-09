@@ -1,7 +1,6 @@
-//const { Console } = require("console");
+
 const express = require("express");
 const app = express();
-//const spawn = require("child_process").spawn;
 const spawnSync = require("child_process").spawnSync;
 
 app.use(function(req, res, next) {

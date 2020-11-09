@@ -146,6 +146,7 @@ N -> t N\n\
 N -> t V N\n\
 N -> N t N\n\
 N -> n\n\
+N -> j\n\
 V -> V V\n\
 V -> V\n\
 V -> V r\n\
@@ -156,12 +157,13 @@ V -> V N V\n\
 V -> v\n\
 C -> c\n\
 C -> i\n\
-N -> \'\'\n\
-V -> \'\'\n\
 ');
 
 	$element('grammarView').innerHTML = formatGrammar(grammar);
 /*
+N -> \'\'\n\
+V -> \'\'\n\
+S -> N\n\
 
 S -> N V \n\
 S -> d v d n\n\
